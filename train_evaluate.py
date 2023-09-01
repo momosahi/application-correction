@@ -27,8 +27,7 @@ def random_forest_titanic(data: pd.DataFrame, fraction_test: float = 0.9, n_tree
     rdmf_score = rdmf.score(X_test, y_test)
     print(
         f"{round(rdmf_score * 100)} % de bonnes réponses sur les données de test pour validation \
-            (résultat qu'on attendrait si on soumettait notre prédiction \
-                sur le dataset de test.csv)"
+        (résultat qu'on attendrait si on soumettait notre prédiction sur le dataset de test.csv)"
     )
 
     print("matrice de confusion")
