@@ -11,8 +11,8 @@ from src.features.build_features import (
 )
 
 # PARAMETRES -------------------------------------
-config = import_yaml_config("config.yaml")
-secrets = import_yaml_config("secrets.yaml")
+config = import_yaml_config("configs/config.yaml")
+secrets = import_yaml_config("configs/secrets.yaml")
 
 API_TOKEN = secrets["jetonapi"]
 
