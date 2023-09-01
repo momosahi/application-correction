@@ -1,8 +1,14 @@
 # GESTION ENVIRONNEMENT -----------------------------
 import sys
-from import_data import import_yaml_config, import_data
-from train_evaluate import random_forest_titanic
-from build_features import create_variable, fill_na_titanic, label_encoder_titanic, check_has_cabin, ticket_length
+from src.data.import_data import import_yaml_config, import_data
+from src.models.train_evaluate import random_forest_titanic
+from src.features.build_features import (
+    create_variable,
+    fill_na_titanic,
+    label_encoder_titanic,
+    check_has_cabin,
+    ticket_length,
+)
 
 # PARAMETRES -------------------------------------
 config = import_yaml_config("config.yaml")

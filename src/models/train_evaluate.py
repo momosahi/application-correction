@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix
-from build_features import split_train_test_titanic
+from src.features.build_features import split_train_test_titanic
 
 
 def random_forest_titanic(data: pd.DataFrame, fraction_test: float = 0.9, n_trees: int = 20):
