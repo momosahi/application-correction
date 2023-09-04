@@ -4,12 +4,12 @@ from sklearn.metrics import confusion_matrix
 from src.features.build_features import split_train_test_titanic
 
 
-def random_forest_titanic(data: pd.DataFrame, fraction_test: float = 0.9, n_trees: int = 20):
+def random_forest_titanic(data: pd.DataFrame, fraction_test: float = 0.8, n_trees: int = 20):
     """Random forest model for Titanic survival
 
     Args:
         data (pd.DataFrame): _description_
-        fraction_test (float, optional): _description_. Defaults to 0.9.
+        fraction_test (float, optional): _description_. Defaults to 0.8.
         n_trees (int, optional): _description_. Defaults to 20.
 
     Returns:
