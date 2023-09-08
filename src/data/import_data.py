@@ -1,8 +1,10 @@
+import os
 import pandas as pd
 import yaml
+import logging
 
 
-def import_yaml_config(file_path: str) -> dict:
+def import_yaml_config(location: str) -> dict:
     """Wrapper to easily import YAML
 
     Args:
@@ -11,9 +13,19 @@ def import_yaml_config(file_path: str) -> dict:
     Returns:
         dict: YAML content as dict
     """
+    if not isinstance(location, str):
+        raise TypeError("File path must be a string.")
 
-    with open(file_path, "r") as f:
-        dict_config = yaml.safe_load(f)
+    if not os.path.isfile(location):
+        raise FileNotFoundError(f"Invalid file path: {location}")
+
+    try:
+        with open(location, "r") as f:
+            dict_config = yaml.safe_load(f)
+    except yaml.YAMLError as e:
+        logging.error(f"Error loading YAML file: {e}")
+        dict_config = {}
+
     return dict_config
 
 
@@ -26,6 +38,9 @@ def import_data(path: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Titanic dataset
     """
-    data = pd.read_csv(path)
+    if os.path.exists(path):
+        data = pd.read_csv(path)
+    else:
+        raise FileNotFoundError("File does not exist at the given path.")
     data = data.drop(columns="PassengerId")
     return data
