@@ -4,7 +4,7 @@ import pandas as pd
 from src.features.build_features import create_variable
 
 
-class TestCreateVariableTitle(unittest.TestCase):
+class TestCreateVariable(unittest.TestCase):
     def setUp(self):
         self.data = pd.DataFrame(
             {
