@@ -18,6 +18,7 @@ jobs:
           pip install -r requirements.txt
       - name: Load Secrets YAML
         run: echo "$SECRETS_YAML" > configs/secrets.yaml
+        working-directory: ${{ github.workspace }}
       - name: Lint
         run: |
           pylint src --fail-under=6
