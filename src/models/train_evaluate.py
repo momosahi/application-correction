@@ -25,12 +25,9 @@ def random_forest_titanic(data: pd.DataFrame, fraction_test: float = 0.8, n_tree
     # (10% du dataset d'apprentissage mis de côté)
     # le score étant le nombre de bonne prédiction
     rdmf_score = rdmf.score(X_test, y_test)
-    print(
-        f"{round(rdmf_score * 100)} % de bonnes réponses sur les données de test pour validation \
-        (résultat qu'on attendrait si on soumettait notre prédiction sur le dataset de test.csv)"
-    )
+    print(f"{round(rdmf_score * 100)} % de bonnes réponses sur les données de test pour validation")
 
-    print("matrice de confusion")
-    confusion_matrix(y_test, rdmf.predict(X_test))
+    print("matrice de confusion: ")
+    print(confusion_matrix(y_test, rdmf.predict(X_test)))
 
     return rdmf, X_train, X_test, y_train, y_test
