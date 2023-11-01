@@ -12,9 +12,9 @@ from src.features.build_features import (
 
 # PARAMETRES -------------------------------------
 config = import_yaml_config("configs/config.yaml")
-secrets = import_yaml_config("configs/secrets.yaml")
+# secrets = import_yaml_config("configs/secrets.yaml")
 
-API_TOKEN = secrets["jetonapi"]
+# API_TOKEN = secrets["jetonapi"]
 
 # Number trees as command line argument
 N_TREES = int(sys.argv[1]) if len(sys.argv) == 2 else 20
