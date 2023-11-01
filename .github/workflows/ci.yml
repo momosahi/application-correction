@@ -16,6 +16,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install pylint
           pip install -r requirements.txt
+      - name: Load Secrets YAML
+        run: echo "$SECRETS_YAML" > secrets.yaml
       - name: Lint
         run: |
           pylint src --fail-under=6
