@@ -13,7 +13,7 @@ def random_forest_titanic(data: pd.DataFrame, fraction_test: float = 0.8, n_tree
         n_trees (int, optional): _description_. Defaults to 20.
 
     Returns:
-        _type_: _description_
+        Five elements: rdmf, X_train, X_test, y_train, y_test
     """
 
     X_train, X_test, y_train, y_test = split_train_test_titanic(data, fraction_test=fraction_test)

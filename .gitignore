@@ -4,3 +4,5 @@ src/data/__pycache__/*
 src/features/__pycache__/*
 src/models/__pycache__/*
 .DS_Store
+.dvc/*
+/data
