@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import yaml
 import logging
+import requests
+import io
 
 
 def import_yaml_config(location: str) -> dict:
@@ -40,6 +42,10 @@ def import_data(path: str) -> pd.DataFrame:
     """
     if os.path.exists(path):
         data = pd.read_csv(path)
+    elif path.startswith("https://"):
+        response = requests.get(path)
+        response.raise_for_status()
+        data = pd.read_csv(io.StringIO(response.text))
     else:
         raise FileNotFoundError("File does not exist at the given path.")
     data = data.drop(columns="PassengerId")
