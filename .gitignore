@@ -7,3 +7,6 @@ src/models/__pycache__/*
 .dvc/*
 .history/*
 .venv/*
+
+
+model.joblib

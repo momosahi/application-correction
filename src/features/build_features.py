@@ -1,7 +1,5 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.model_selection import train_test_split
 
 
 # Extraction et ajout de la variable titre
@@ -134,16 +132,9 @@ def split_train_test_titanic(data: pd.DataFrame, y_index: int = 0, fraction_test
             Defaults to 0.2.
 
     Returns:
-        Four elements : X_train, X_test, y_train, y_test
+        2 elements (pd.DataFrame) : train, test
     """
 
-    y = data.iloc[:, y_index].values
-    X = data.iloc[:, 1:12].values
-
-    # Feature Scaling
-    scaler_x = MinMaxScaler((-1, 1))
-    X = scaler_x.fit_transform(X)
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=fraction_test)
-
-    return X_train, X_test, y_train, y_test
+    train = data.sample(frac=1 - fraction_test, random_state=42)
+    test = data.drop(train.index)
+    return train, test

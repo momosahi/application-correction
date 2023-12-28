@@ -1,7 +1,7 @@
 # GESTION ENVIRONNEMENT -----------------------------
 import sys
 from src.data.import_data import import_yaml_config, import_data
-from src.models.train_evaluate import random_forest_titanic
+from src.models.train_evaluate import build_pipeline_titanic
 from src.features.build_features import (
     create_variable,
     fill_na_titanic,
@@ -9,6 +9,9 @@ from src.features.build_features import (
     check_has_cabin,
     ticket_length,
 )
+from sklearn.metrics import confusion_matrix
+from src.features.build_features import split_train_test_titanic
+from joblib import dump
 
 # PARAMETRES -------------------------------------
 config = import_yaml_config("configs/config.yaml")
@@ -52,6 +55,21 @@ TrainingData = ticket_length(TrainingData)
 TestData = ticket_length(TestData)
 
 
-# MODELISATION: RANDOM FOREST ----------------------------
+train, test = split_train_test_titanic(TrainingData, fraction_test=TEST_FRACTION)
 
-model = random_forest_titanic(data=TrainingData, fraction_test=TEST_FRACTION, n_trees=N_TREES)
+# MODELISATION: RANDOM FOREST ----------------------------
+pipe = build_pipeline_titanic(n_trees=N_TREES)
+pipe.fit(train.drop("Survived", axis="columns"), train["Survived"])
+
+# calculons le score sur le dataset d'apprentissage et sur le dataset de test
+# (10% du dataset d'apprentissage mis de côté)
+# le score étant le nombre de bonne prédiction
+model_val_score = pipe.score(test.drop("Survived", axis="columns"), test["Survived"])
+print(f"{round(model_val_score * 100)} % de bonnes réponses sur les données de test pour validation")
+
+
+print("matrice de confusion")
+print(confusion_matrix(test["Survived"], pipe.predict(test.drop("Survived", axis="columns"))))
+
+# Sauvegarde du modèle
+dump(pipe, "model.joblib")
