@@ -1,0 +1,152 @@
+---
+title: "Le Machine Learning au secours du Titanic"
+theme: cosmo
+format: html
+echo: false
+---
+
+<br>
+
+Ce rapport vise à révéler la fatalité
+derrière les 3h du film Titanic.
+
+
+## Prédiction de notre modèle
+
+```{python}
+from joblib import load
+import matplotlib.pyplot as plt
+
+import numpy as np
+import pandas as pd
+import shap
+
+df = pd.DataFrame(
+    [
+        ["jack", 3, 27.0, 0, "S", 8.0, "male", "Mr.", 0, 6, 0],
+        ["rose", 1, 22.0, 1, "S", 60.0, "female", "Mrs.", 1, 6, 0],
+    ],
+    columns=["name", "Pclass", "Age", "Parch", "Embarked", "Fare", "Sex", "Title", "hasCabin", "Ticket_Len", "SibSp"],
+)
+
+train = pd.read_parquet("train.parquet")
+model = load("model.joblib")
+
+out = pd.concat([pd.DataFrame(model.predict(df), columns=["Survie"]), df], axis=1)
+out["Survie"] = np.where(out["Survie"] == 1, "Survie", "Décès")
+ojs_define(output_model=out)
+```
+
+```{ojs}
+df_js = transpose(output_model)
+Inputs.table(
+    df_js, {
+    header: {
+        Survie: "Prédiction de survie",
+        name: "Personnage",
+        age: "Age",
+        Fare: "Prix du ticket",
+        Pclass: "Classe",
+        Sex: "Genre"
+    },
+    format : {
+        name: x => x.charAt(0).toUpperCase() + x.slice(1),
+        Sex: x => x.charAt(0).toUpperCase() + x.slice(1),
+        Fare: sparkbar(d3.max(df_js, d => d.Fare))
+    }
+ }
+)
+```
+
+<br>
+
+```{python}
+preprocessing = model[:-1]
+
+train_df = train.drop("Survived", axis = 'columns')
+y_train = train['Survived']
+
+train_matrice = pd.DataFrame(
+    preprocessing.fit_transform(train_df).todense(),
+    columns = preprocessing.get_feature_names_out()
+)
+test_matrice = pd.DataFrame(
+    preprocessing.transform(df).todense(),
+    columns = preprocessing.get_feature_names_out()
+)
+```
+
+```{python}
+clf = model['classifier']
+clf.fit(train_matrice, y_train)
+#set the tree explainer as the model of the pipeline
+explainer = shap.TreeExplainer(clf)
+```
+
+```{python}
+#| output: false
+choosen_instance1 = test_matrice.loc[[0]]
+shap_values = explainer.shap_values(choosen_instance1)
+shap.initjs()
+```
+
+```{python}
+shap.save_html(
+    '_site/Jake.html',
+    shap.force_plot(explainer.expected_value[1], shap_values[1], choosen_instance1))
+```
+
+
+```{python}
+#| output: false
+choosen_instance2 = test_matrice.loc[[1]]
+shap_values = explainer.shap_values(choosen_instance2)
+shap.initjs()
+```
+
+```{python}
+shap.save_html(
+    '_site/Rose.html',
+    shap.force_plot(explainer.expected_value[1], shap_values[1], choosen_instance2))
+```
+
+
+```{ojs}
+viewof perso = Inputs.select(['Jake', 'Rose'], {label: "Choisir son personnage"})
+```
+
+```{ojs}
+photo_rose = "https://citation-celebre.leparisien.fr/images/personnage-fiction/1199.jpg"
+photo_jake = "https://www.melty.fr/wp-content/uploads/meltyfr/2022/04/une-jack-titanic-1024x576.jpeg"
+url = (perso == "Jake") ? photo_jake : photo_rose
+```
+
+```{ojs}
+message = (perso == "Jake") ?  html`<h2>Jake avait-il une chance de survivre ?</h2>` : html`<h2>Rose risquait-elle de mourir ?</h2>`
+message
+```
+
+<br>
+
+```{ojs}
+html`<img src="${url}" height="300px">`
+```
+
+```{ojs}
+html`<iframe width="560" height="315" src="${perso}.html" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+```
+
+
+```{ojs}
+function sparkbar(max) {
+  return x => htl.html`<div style="
+    background: lightblue;
+    width: ${100 * x / max}%;
+    float: right;
+    padding-right: 3px;
+    box-sizing: border-box;
+    overflow: visible;
+    display: flex;
+    justify-content: end;">${x.toLocaleString("en")}`
+}
+```

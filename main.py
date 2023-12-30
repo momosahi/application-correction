@@ -56,6 +56,8 @@ TestData = ticket_length(TestData)
 
 
 train, test = split_train_test_titanic(TrainingData, fraction_test=TEST_FRACTION)
+train.to_parquet("train.parquet")
+
 
 # MODELISATION: RANDOM FOREST ----------------------------
 pipe = build_pipeline_titanic(n_trees=N_TREES)
