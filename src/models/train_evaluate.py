@@ -1,9 +1,9 @@
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.impute import SimpleImputer
+from sklearn.ensemble import RandomForestClassifier  # type: ignore
+from sklearn.preprocessing import MinMaxScaler  # type: ignore
+from sklearn.pipeline import Pipeline  # type: ignore
+from sklearn.compose import ColumnTransformer  # type: ignore
+from sklearn.preprocessing import OneHotEncoder  # type: ignore
+from sklearn.impute import SimpleImputer  # type: ignore
 
 
 def build_pipeline_titanic(n_trees: int = 20):

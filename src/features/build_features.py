@@ -1,5 +1,6 @@
-import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+import pandas as pd  # type: ignore
+from sklearn.preprocessing import LabelEncoder  # type: ignore
+from typing import Union
 
 
 # Extraction et ajout de la variable titre
@@ -22,7 +23,7 @@ def create_variable(data: pd.DataFrame, variable_name: str = "Name"):
     return data
 
 
-def fill_na_column(data: pd.DataFrame, column: str = "Age", value: float = 0.0) -> pd.DataFrame:
+def fill_na_column(data: pd.DataFrame, column: str = "Age", value: Union[str, float, int] = 0.0) -> pd.DataFrame:
     """Imputation for a given column
 
     Args:

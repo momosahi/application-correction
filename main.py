@@ -9,9 +9,9 @@ from src.features.build_features import (
     check_has_cabin,
     ticket_length,
 )
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix  # type: ignore
 from src.features.build_features import split_train_test_titanic
-from joblib import dump
+from joblib import dump  # type: ignore
 
 # PARAMETRES -------------------------------------
 config = import_yaml_config("configs/config.yaml")
