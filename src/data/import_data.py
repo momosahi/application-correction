@@ -1,8 +1,8 @@
 import os
 import pandas as pd  # type: ignore
-import yaml
+import yaml  # type: ignore
 import logging
-import requests
+import requests  # type: ignore
 import io
 
 
