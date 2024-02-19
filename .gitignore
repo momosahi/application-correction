@@ -8,7 +8,7 @@ src/models/__pycache__/*
 .history/
 
 
-model.joblib
+
 /.quarto/
 
 
